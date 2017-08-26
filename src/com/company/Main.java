@@ -24,7 +24,10 @@ public class Main {
     }
 
     private static void resultWrite(TreeMap<LineUnit,RecordUnit> linesMap, BlockingQueue<RecordUnit> queue) throws InterruptedException {
-            for(Map.Entry<LineUnit,RecordUnit> entry : linesMap.entrySet())queue.put(entry.getValue());
+            for(Map.Entry<LineUnit,RecordUnit> entry : linesMap.entrySet()){
+                queue.put(entry.getValue());
+                if(queue.size()%100==0)System.out.println(" queue size -> "+queue.size());
+            }
     }
 
     private static TreeMap<LineUnit,RecordUnit> fileScan(String path) {
@@ -83,11 +86,11 @@ public class Main {
     public static void main(String[] args) {
         String pathProducer = args[0];
         String pathConsumer = args[1];
-        Integer threadsNumber = Integer.parseInt(args[2]);//1
+        Integer threadsNumber = Integer.parseInt(args[2]);
 
         System.out.println("begin processing -> "+new Timestamp(System.currentTimeMillis()));
 
-        BlockingQueue<RecordUnit> queue = new ArrayBlockingQueue<>(7000);
+        BlockingQueue<RecordUnit> queue = new ArrayBlockingQueue<>(10_000);
         ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
         TreeMap<LineUnit,RecordUnit> linesMap = fileScan(pathProducer);
         System.out.println("number of lines -> "+linesMap.size());
