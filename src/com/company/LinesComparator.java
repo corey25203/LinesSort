@@ -27,7 +27,8 @@ public class LinesComparator implements Comparator<LineUnit> {
         if(cache.containsKey(lineUnitFirst.getLineNumber())){first = cache.get(lineUnitFirst.getLineNumber());}
         if(cache.containsKey(lineUnitSecond.getLineNumber())){second = cache.get(lineUnitSecond.getLineNumber());}
 
-        if(cache.size()>1000){cache.clear();}
+        if(cache.size()>100000){cache.clear();}
+//        if((cache.size() % 10000)==0) System.out.println("cache status- > " + cache.size());
 
         try(
             RandomAccessFile file = new RandomAccessFile(filePath, "r")
@@ -51,6 +52,10 @@ public class LinesComparator implements Comparator<LineUnit> {
         int comparsionResult = first.compareTo(second);
         if(comparsionResult==0) return  (lineUnitFirst.getLineNumber()-lineUnitSecond.getLineNumber());
 
+		//TODO:
+		 first = null;
+         second = null;
+		
         return comparsionResult;
 
     }
